@@ -1,0 +1,22 @@
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td { padding: 10px; }
+
+.c1, .c4, .c5 { width: 25%; }
+.c2 {width: 15%; }
+.c3 {width: 10%; }
+
+.example-text__bracket, .example-text__data { color: #1da6fb; }
+
+.example-text__bracket {
+  text-indent: 10px;
+}
+
+.example-text__data {
+  padding-left: 20px;
+  /* padding-left: 50px; */
+  /* text-indent: -30px; */
+}
