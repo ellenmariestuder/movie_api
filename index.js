@@ -6,12 +6,85 @@ app.use(morgan('common'));
 app.use(express.static('public'));
 
 let movies = [
-  {title: 'Two Weeks Notice',
-  description: 'description: 2002 American romantic comedy film starring Hugh Grant and Sandra Bullock.',
-  genre: 'Romantic Comedy',
-  director: 'Marc Lawrence',
-  imageURL: '',
-  featured: 'Y',
+  {
+    title: 'Two Weeks Notice',
+    description: 'A 2002 American romantic comedy film starring Hugh Grant and Sandra Bullock.',
+    genre: 'Romantic Comedy',
+    director: 'Marc Lawrence',
+    imageURL: 'https://popcorndialogues.com/wp-content/uploads/2010/05/Two-Weeks-Notice-Poster.jpeg',
+    featured: 'Y'
+  },
+  {
+    title: 'Jesus Christ SuperStar',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Enchanted',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'My Cousin Vinny',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Uncle Buck',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Planes, Trains, and Automobiles',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Big Fish',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Get Out',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Hereditary',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
+  },
+  {
+    title: 'Midsomar',
+    description: '',
+    genre: '',
+    director: '',
+    imageURL: '',
+    featured: ''
   }
 ];
 
@@ -26,7 +99,7 @@ let directors = [
   {
     name: 'Marc Lawrence',
     birthYear: 1959,
-    deathYear: 'https://popcorndialogues.com/wp-content/uploads/2010/05/Two-Weeks-Notice-Poster.jpeg',
+    deathYear: '',
     bio: 'Marc Lawrence is an American director, screenwriter, and producer. Lawrence is best known for his numerous collaborations with Sandra Bullock and Hugh Grant.'
   }
 ];
@@ -41,29 +114,6 @@ let users = [
   }
 ];
 
-let topMovies = [
-  {title: 'Two Weeks Notice',
-  rank: 1},
-  {title: 'Jesus Christ SuperStar',
-  rank: 2},
-  {title: 'Enchanted',
-  rank: 3},
-  {title: 'My Cousin Vinny',
-  rank: 4},
-  {title: 'Uncle Buck',
-  rank: 5},
-  {title: 'Trains, Planes, and Automobiles',
-  rank: 6},
-  {title: 'Big Fish',
-  rank: 7},
-  {title: 'Get Out',
-  rank: 8},
-  {title: 'Hereditary',
-  rank: 9},
-  {title: 'Midsomar',
-  rank: 10},
-];
-
 //------------------------------------------------------------------------------
 
 // Landing welcome message
@@ -71,14 +121,9 @@ let topMovies = [
    res.send('Welcome to myFlix!')
  });
 
-// // Return list of top movies
-//  app.get('/movies', (req, res) => {
-//    res.json(topMovies);
-//  })
-
 // Return list of all  movies
 app.get('/movies', (req, res) => {
-  res.json(movies.title);
+  res.json(movies);
 });
 
 // Return data about a single movie by title
@@ -109,7 +154,6 @@ app.post('/users', (req, res) => {
     const message = 'Missing name in request body';
     res.status(400).send(message);
   } else {
-    // newStudent.id = uuid.v4();
     users.push(newUser);
     res.status(201).send(newUser);
   }
