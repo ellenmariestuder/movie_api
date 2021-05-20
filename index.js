@@ -177,40 +177,40 @@ app.put('/users/:username/', (req, res) => {
 
 // Allow users to add a movie to their list of favorites
 // (show text that movie has been added)
-app.post('/users/:favoriteMovies', (req, res) => {
-  let newMovie = req.body;
-
-  if (!newMovie.title) {
-    const message = 'Missing movie title in request body';
-    res.status(400).send(message);
-  } else {
-    // newStudent.id = uuid.v4();
-    users.push(newMovie);
-    res.status(201).send(newMovie);
-  }
+app.post('/users/favoriteMovies/:title', (req, res) => {
+//   let newMovie = req.body;
+//
+//   if (!newMovie.title) {
+//     const message = 'Missing movie title in request body';
+//     res.status(400).send(message);
+//   } else {
+//     // newStudent.id = uuid.v4();
+//     users.push(newMovie);
+//     res.status(201).send(newMovie);
+res.send('The movie: ' + req.params.title + ' was successfully added to your list of favorites.')
 });
 
 // Allow users to remove a movie frm their list of favorites
 // (show text that movie has been removed)
-app.delete('/users/:title', (req, res) => {
+app.delete('/users/favoriteMovies/:title', (req, res) => {
   // let movie = users.find((movie) => { return users.title === req.params.title });
   //
   // if (movie) {
   //   users = users.filter((movie) => { return obj.title !== req.params.title });
   //   res.status(201).send('' + req.params.title + ' was deleted.');
   // }
-  res.send(req.params.title + ' was successfully deleted.')
+  res.send(req.params.title + ' was successfully deleted from your list of favorites.')
 });
 
 // Allow existing users to deregister
 // (show text that user email has been removed )
 app.delete('/users/:email', (req, res) => {
-  let user = users.find((user) => { return users.email === req.params.email });
-
-  if (user) {
-    users = users.filter((obj) => { return obj.email !== req.params.email });
-    res.status(201).send('Account associated with email address "' + req.params.email + '" was deleted.');
-  }
+  // let user = users.find((user) => { return users.email === req.params.email });
+  //
+  // if (user) {
+  //   users = users.filter((obj) => { return obj.email !== req.params.email });
+  //   res.status(201).send('Account associated with email address "' + req.params.email + '" was deleted.');
+  res.send('Account associated with email address "' + req.params.email + '" was deleted.')
 });
 
 //------------------------------------------------------------------------------
