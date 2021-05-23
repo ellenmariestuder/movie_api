@@ -55,14 +55,14 @@
       </tr>
       <tr>
         <td> Return data about a genre by name/ title </td>
-        <td> /genres/[type] </td>
+        <td> movies/genre/[type] </td>
         <td> GET </td>
         <td> None </td>
         <td> A JSON object containing a description of the genre </td>
       </tr>
       <tr>
         <td> Return data about a director by name </td>
-        <td> /directors/[name] </td>
+        <td> movies/director/[name] </td>
         <td> GET </td>
         <td> None </td>
         <td> A JSON object holding data about a single director, containing
@@ -101,21 +101,21 @@
       </tr>
       <tr>
         <td> Allow users to update their username </td>
-        <td> /users/[userName] </br>
+        <td> /users/[username] </br>
         <td> PUT </td>
         <td> None </td>
         <td> A text message confirming the username was updated </td>
       </tr>
       <tr>
         <td> Allow users to add a movie to their list of favorites </td>
-        <td> /users/[favoriteMovies]/[title] </td>
+        <td> /users/[favoritemovies]/[title] </td>
         <td> POST </td>
         <td> None </td>
         <td> A text message confirming the movie has been added </td>
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites </td>
-        <td> /users/[favoriteMovies]/[title] </td>
+        <td> /users/[favoritemovies]/[title] </td>
         <td> DELETE </td>
         <td> None </td>
         <td> A text message confirming the movie has been removed </td>
