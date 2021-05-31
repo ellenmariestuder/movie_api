@@ -9,6 +9,7 @@ const Users = Models.User;
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB',
   { useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.set('useFindAndModify', false);
 
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -57,7 +58,7 @@ app.get('/movies/Genre/:Name', (req, res) => {
 });
 
 // Return data about a director by name
-app.get('movies/Directors/:Name', (req, res) => {
+app.get('movies/Director/:Name', (req, res) => {
   Movies.findOne({ 'Director.Name': req.params.Name })
   .then((Director) => {
     res.json(Director);
@@ -96,7 +97,7 @@ app.post('/users', (req, res) => {
   });
 
 // Allow users to update their username
-app.put('/users/:Email/:Username', (req, res) => {
+app.put('/users/:Email', (req, res) => {
   Users.findOneAndUpdate({ Email: req.params.Email },
   { $set: { Username: req.body.Username }},
   { new: true },
