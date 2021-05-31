@@ -1,18 +1,24 @@
 const express = require('express'),
+  bodyParser = require('body-parser'),
+  uuid = require('uuid'),
   morgan = require('morgan');
+
 const app = express();
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB',
-  { useNewUrlParser: true, useUnifiedTopology: true});
-mongoose.set('useFindAndModify', false);
+  { useNewUrlParser: true,
+    useUnifiedTopology: true });
 
 app.use(morgan('common'));
 app.use(express.static('public'));
+app.use(bodyParser.json());
 
 //------------------------------------------------------------------------------
 
@@ -46,10 +52,11 @@ app.get('/movies/:Title', (req, res) => {
 });
 
 // Return data about a genre by genre title
-app.get('/movies/Genre/:Name', (req, res) => {
-  Movies.findOne({ 'Grenre.Name': req.params.Name })
-  .then((Genre) => {
-    res.json(Genre);
+// app.get('/movies/Genre/:Name', (req, res) => {
+app.get('/genre/:Name', (req, res) => {
+  Genres.findOne({ Name: req.params.Name })
+  .then((genre) => {
+    res.json(genre.Description);
   })
   .catch((err) => {
     console.error(err);
@@ -58,10 +65,10 @@ app.get('/movies/Genre/:Name', (req, res) => {
 });
 
 // Return data about a director by name
-app.get('movies/Director/:Name', (req, res) => {
-  Movies.findOne({ 'Director.Name': req.params.Name })
-  .then((Director) => {
-    res.json(Director);
+app.get('/director/:Name', (req, res) => {
+  Directors.findOne({ Name: req.params.Name })
+  .then((director) => {
+    res.json(director);
   })
   .catch((err) => {
     console.error(err);
