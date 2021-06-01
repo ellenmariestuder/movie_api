@@ -70,8 +70,7 @@ app.get('/movies/:Title', (req, res) => {
 });
 
 // Return data about a genre by genre title
-// app.get('/movies/Genre/:Name', (req, res) => {
-app.get('/genre/:Name', (req, res) => {
+app.get('/genres/:Name', (req, res) => {
   Genres.findOne({ Name: req.params.Name })
   .then((genre) => {
     res.json(genre.Description);
@@ -83,7 +82,7 @@ app.get('/genre/:Name', (req, res) => {
 });
 
 // Return data about a director by name
-app.get('/director/:Name', (req, res) => {
+app.get('/directors/:Name', (req, res) => {
   Directors.findOne({ Name: req.params.Name })
   .then((director) => {
     res.json(director);
@@ -160,10 +159,12 @@ app.post('/users/:Username/Movies/:MovieID', (req, res) => {
 
 // Allow users to remove a movie frm their list of favorites
 app.delete('/users/:Username/Movies/:MovieID', (req, res) => {
-  Users.findOneAndRemove({ 'Username.MovieID' : req.params.MovieID })
+  Users.findOneAndRemove({ FavoriteMovies : req.params.MovieID })
     .then((movie) => {
       if (!movie) {
         res.status(400).send(req.params.MovieID + ' was not found.');
+      } else {
+        res.status(200).send(req.params.MovieID + ' was deleted.');
       }
     })
     .catch((err) => {

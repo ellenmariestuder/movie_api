@@ -20,7 +20,7 @@
 
     <br/>
 
-    <table style="width:80%">
+    <table style="width:90%">
       <tr>
         <th class="c1"> Business Logic </th>
         <th class="c2"> URL </th>
@@ -37,42 +37,42 @@
       </tr>
       <tr>
         <td> Return data about a single movie title </td>
-        <td> /movies/[title] </td>
+        <td> /movies/[Title] </td>
         <td> GET </td>
         <td> None</td>
         <td> A JSON object holding data about a single movie title, containing
           description, genre, director, image URL, and whether it's featured or
           not. Example:
           <div class="example-text__bracket"> { </div>
-            <div class="example-text__data"> title: Two Weeks Notice </div>
-            <div class="example-text__data"> description: 2002 American romantic comedy film starring Hugh Grant and Sandra Bullock. </div>
-            <div class="example-text__data"> genre: Romantic Comedy </div>
-            <div class="example-text__data"> director: Marc Lawrence  </div>
-            <div class="example-text__data"> imageURL: https://popcorndialogues.com/wp-content/uploads/2010/05/Two-Weeks-Notice-Poster.jpeg </div>
-            <div class="example-text__data"> featured: Yes  </div>
+            <div class="example-text__data"> Title: Two Weeks Notice </div>
+            <div class="example-text__data"> Description: 2002 American romantic comedy film starring Hugh Grant and Sandra Bullock. </div>
+            <div class="example-text__data"> Genre: Romantic Comedy </div>
+            <div class="example-text__data"> Director: Marc Lawrence  </div>
+            <div class="example-text__data"> ImageURL: twoweeksnoticemovie.jpeg </div>
+            <div class="example-text__data"> Featured: Yes  </div>
           <div class="example-text__bracket"> } </div>
         </td>
       </tr>
       <tr>
         <td> Return data about a genre by name/ title </td>
-        <td> movies/genre/[type] </td>
+        <td> genres/[Name] </td>
         <td> GET </td>
         <td> None </td>
         <td> A JSON object containing a description of the genre </td>
       </tr>
       <tr>
         <td> Return data about a director by name </td>
-        <td> movies/director/[name] </td>
+        <td> directors/[Name] </td>
         <td> GET </td>
         <td> None </td>
         <td> A JSON object holding data about a single director, containing
           bio, birth year, and death year. Example:
 
           <div class="example-text__bracket"> { </div>
-            <div class="example-text__data"> name: Marc Lawrence </div>
-              <div class="example-text__data"> bio: Marc Lawrence is an American director, screenwriter, and producer. Lawrence is best known for his numerous collaborations with Sandra Bullock and Hugh Grant. </div>
-              <div class="example-text__data"> birth year: 1959 </div>
-              <div class="example-text__data"> death year: N/A </div>
+            <div class="example-text__data"> Name: Marc Lawrence </div>
+              <div class="example-text__data"> Bio: Marc Lawrence is an American director, screenwriter, and producer. Lawrence is best known for his numerous collaborations with Sandra Bullock and Hugh Grant. </div>
+              <div class="example-text__data"> Birth year: 1959 </div>
+              <div class="example-text__data"> Death year:  </div>
           <div class="example-text__bracket"> } </div>
 
         </td>
@@ -83,49 +83,71 @@
         <td> POST </td>
         <td> A JSON object holding data about the user to add, structured like:
           <div class="example-text__bracket"> { </div>
-            <div class="example-text__data"> name: Sarah Smith </div>
-            <div class="example-text__data"> username: ss123 </div>
-            <div class="example-text__data"> email: ss123@gmail.com </div>
-            <div class="example-text__data"> password: ******  </div>
+            <div class="example-text__data"> Username: ss123 </div>
+            <div class="example-text__data"> Password: ******  </div>
+            <div class="example-text__data"> Email: ss123@gmail.com </div>
+            <div class="example-text__data"> Birthday: 1993-01-01  </div>
           <div class="example-text__bracket"> } </div>
         </td>
         <td> A JSON object holding data about the user that was added:
           <div class="example-text__bracket"> { </div>
-            <div class="example-text__data"> name: Sarah Smith</div>
-            <div class="example-text__data"> username: ss123 </div>
-            <div class="example-text__data"> email: ss123@gmail.com </div>
-            <div class="example-text__data"> password: ******  </div>
+            <div class="example-text__data"> Username: ss123 </div>
+            <div class="example-text__data"> Password: ******  </div>
+            <div class="example-text__data"> Email: ss123@gmail.com </div>
+            <div class="example-text__data"> Birthday: 1993-01-01  </div>
           <div class="example-text__bracket"> } </div>
 
         </td>
       </tr>
       <tr>
-        <td> Allow users to update their username </td>
-        <td> /users/[username] </br>
+        <td> Allow users to update their user info </td>
+        <td> /users/[Username] </br>
         <td> PUT </td>
-        <td> None </td>
-        <td> A text message confirming the username was updated </td>
+        <td> A JSON object holding the updated user info, structured like:
+          <div class="example-text__bracket"> { </div>
+            <div class="example-text__data"> Username: ss123 </div>
+            <div class="example-text__data"> Password: ******  </div>
+            <div class="example-text__data"> Email: ss123@gmail.com </div>
+            <div class="example-text__data"> Birthday: 1993-01-01  </div>
+          <div class="example-text__bracket"> } </div>
+        </td>
+        <td> A JSON object holding all current data for the updated user:
+          <div class="example-text__bracket"> { </div>
+            <div class="example-text__data"> Username: ss123 </div>
+            <div class="example-text__data"> Password: ******  </div>
+            <div class="example-text__data"> Email: ss123@gmail.com </div>
+            <div class="example-text__data"> Birthday: 1993-01-01  </div>
+          <div class="example-text__bracket"> } </div>
       </tr>
       <tr>
         <td> Allow users to add a movie to their list of favorites </td>
-        <td> /users/[favoritemovies]/[title] </td>
+        <td> /users/[Username]/Movies/[MovieID] </td>
         <td> POST </td>
         <td> None </td>
-        <td> A text message confirming the movie has been added </td>
+        <td> A JSON object holding updated user data, including the new favorite movie just added. Example:
+          <div class="example-text__bracket"> { </div>
+            <div class="example-text__data"> Favorite Movies: [ 234lkjsdfh2348 ] </div>
+            <div class="example-text__data"> _id: 23497sdkfhs83 </div>
+            <div class="example-text__data"> Username: ss123 </div>
+            <div class="example-text__data"> Password: ******  </div>
+            <div class="example-text__data"> Email: ss123@gmail.com </div>
+            <div class="example-text__data"> Birthday: 1993-01-01  </div>
+          <div class="example-text__bracket"> } </div>
+        </td>
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites </td>
-        <td> /users/[favoritemovies]/[title] </td>
+        <td> /users/[Username]/Movies/[MovieID] </td>
         <td> DELETE </td>
         <td> None </td>
         <td> A text message confirming the movie has been removed </td>
       </tr>
       <tr>
         <td>Allow existing users to deregister </td>
-        <td> /users/[email] </td>
+        <td> /users/[Username] </td>
         <td> DELETE </td>
         <td> None </td>
-        <td> A text message confirming the user email has been removed </td>
+        <td> A text message confirming the account associated with the username provided has been removed </td>
       </tr>
     </table>
   </body>
