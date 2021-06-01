@@ -12,9 +12,15 @@ const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+  useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true
+   });
+
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true);
 
 app.use(morgan('common'));
 app.use(express.static('public'));
@@ -81,7 +87,7 @@ app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username})
     .then((user) => {
       if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
+        return res.status(400).send(req.body.Username + ' already exists');
       } else {
         Users
         .create({
@@ -104,9 +110,15 @@ app.post('/users', (req, res) => {
   });
 
 // Allow users to update their username
-app.put('/users/:Email', (req, res) => {
-  Users.findOneAndUpdate({ Email: req.params.Email },
-  { $set: { Username: req.body.Username }},
+app.put('/users/:Username', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username },
+  { $set: {
+    Username: req.body.Username,
+    Password: req.body.Password,
+    Email: req.body.Email,
+    Birthday: req.body.Birthday
+   },
+  },
   { new: true },
   (err, updatedUser) => {
     if(err) {
@@ -119,10 +131,11 @@ app.put('/users/:Email', (req, res) => {
 });
 
 // Allow users to add a movie to their list of favorites
-app.post('/users/:Username/Movies/:MovieID', (req, res) => {
+app.post('/users/:Username/FavoriteMovies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
-  { $push: { FavoriteMovies: req.params.MovieID }},
-  { new: true},
+  { $push: { FavoriteMovies: req.params.MovieID },
+  },
+  { new: true },
   (err, updatedUser) => {
     if(err) {
       console.error(err);
@@ -134,7 +147,7 @@ app.post('/users/:Username/Movies/:MovieID', (req, res) => {
 });
 
 // Allow users to remove a movie frm their list of favorites
-app.delete('/users/:Username/Movies/:MovieID', (req, res) => {
+app.delete('/users/:Username/FavoriteMovies/:MovieID', (req, res) => {
   Users.findOneAndRemove({ MovieID: req.params.MovieID })
     .then((movie) => {
       if (!movie) {
