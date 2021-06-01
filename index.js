@@ -45,6 +45,18 @@ app.get('/movies', (req, res) => {
     });
 });
 
+// Return list of all users
+app.get('/users', (req, res) => {
+  Users.find()
+    .then((users) => {
+      res.status(201).json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 // Return data about a single movie by title
 app.get('/movies/:Title', (req, res) => {
   Movies.findOne({ Title: req.params.Title })
@@ -131,7 +143,7 @@ app.put('/users/:Username', (req, res) => {
 });
 
 // Allow users to add a movie to their list of favorites
-app.post('/users/:Username/FavoriteMovies/:MovieID', (req, res) => {
+app.post('/users/:Username/Movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username },
   { $push: { FavoriteMovies: req.params.MovieID },
   },
@@ -147,8 +159,8 @@ app.post('/users/:Username/FavoriteMovies/:MovieID', (req, res) => {
 });
 
 // Allow users to remove a movie frm their list of favorites
-app.delete('/users/:Username/FavoriteMovies/:MovieID', (req, res) => {
-  Users.findOneAndRemove({ MovieID: req.params.MovieID })
+app.delete('/users/:Username/Movies/:MovieID', (req, res) => {
+  Users.findOneAndRemove({ 'Username.MovieID' : req.params.MovieID })
     .then((movie) => {
       if (!movie) {
         res.status(400).send(req.params.MovieID + ' was not found.');
@@ -166,6 +178,8 @@ app.delete('/users/:Username', (req, res) => {
     .then((user) => {
       if (!user) {
         res.status(400).send(req.params.Username + ' was not found.');
+      } else {
+        res.status(200).send(req.params.Username + ' was deleted.');
       }
     })
     .catch((err) => {
