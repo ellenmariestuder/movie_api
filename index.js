@@ -2,11 +2,13 @@ const express = require('express'),
   bodyParser = require('body-parser'),
   uuid = require('uuid'),
   morgan = require('morgan'),
-  passport = require('passport');
+  passport = require('passport'),
+  mongoose = require('mongoose'),
+  cors = require('cors'),
+  {check, validationResult} = require('express-validator');
 require('./passport');
 
 const app = express();
-const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
@@ -21,14 +23,27 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', {
     useCreateIndex: true
    });
 
-// mongoose.set('useFindAndModify', false);
-// mongoose.set('useCreateIndex', true);
-
 app.use(morgan('common'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
+app.use(cors());
 
 let auth = require('./auth')(app);
+
+//------------------------------------------------------------------------------
+
+ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1) {
+      let message = 'The CORS policy for this application doesn`t allow access from origin ' + origin;
+      return callback(new Error(message), false);
+    }
+    return callback (null, true);
+  }
+}));
 
 //------------------------------------------------------------------------------
 
@@ -48,18 +63,6 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) =>
       res.status(500).send('Error: ' + err);
     });
 });
-
-// // Return list of all users
-// app.get('/users', (req, res) => {
-//   Users.find()
-//     .then((users) => {
-//       res.status(201).json(users);
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
 
 // Return data about a single movie by title
 app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -98,31 +101,46 @@ app.get('/directors/:Name', passport.authenticate('jwt', {session: false}), (req
 });
 
 // Allow new users to register
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username})
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        Users
-        .create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday
-        })
-        .then ((user) => {res.status(201).json(user)})
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
+app.post('/users',
+[
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+],
+  (req, res) => {
+
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({errors: errors.array()
+      });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({ Username: req.body.Username})
+      .then((user) => {
+        if (user) {
+          return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+          Users
+          .create({
+            Username: req.body.Username,
+            Password: hashedPassword,
+            Email: req.body.Email,
+            Birthday: req.body.Birthday
+          })
+          .then ((user) => {res.status(201).json(user)})
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+          });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error: ' + error);
+      });
     });
-  });
 
 // Allow users to update their username
 app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -201,7 +219,8 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
    res.status(500).send('Something broke!');
  });
 
-// Log local host in console
- app.listen(8080, () => {
-   console.log('Your app is listening on port 8080.');
- });
+// Log port in console
+const port = process.env.PORT || 8080; 
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
+});
