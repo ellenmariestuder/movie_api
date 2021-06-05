@@ -1,0 +1,5 @@
+{"_id":{"$oid":"60b64b899a1f8b51841bae9f"},"Name":"Romantic Comedy","Description":"Romantic comedy (also known as romcom or rom-com) is a subgenre of comedy and slice-of-life fiction, focusing on lighthearted, humorous plot lines centered on romantic ideas.","__v":0}
+{"_id":{"$oid":"60b64ba09a1f8b51841baea0"},"Name":"Drama","Description":"Drama is a category of narrative fiction (or semi-fiction) intended to be more serious than humorous in tone.","__v":0}
+{"_id":{"$oid":"60b64bb39a1f8b51841baea1"},"Name":"Comedy","Description":"Comedy is a story that tells about a series of funny, or comical events, intended to make the audience laugh.","__v":0}
+{"_id":{"$oid":"60b64bcf9a1f8b51841baea2"},"Name":"Fantasy","Description":"The fantasy genre is characterized by fantastic themes, usually magic, supernatural events, mythology, folklore, or exotic fantasy worlds.","__v":0}
+{"_id":{"$oid":"60b64be59a1f8b51841baea3"},"Name":"Horror","Description":"A horror film is one that seeks to elicit fear in its audience for entertainment purposes. Horror films additionally aim to evoke viewers' nightmares, revulsions and terror of the unknown or the macabre.","__v":0}

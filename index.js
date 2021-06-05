@@ -16,7 +16,8 @@ const Users = Models.User;
 const Genres = Models.Genre;
 const Directors = Models.Director;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
@@ -220,7 +221,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
  });
 
 // Log port in console
-const port = process.env.PORT || 8080; 
+const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });
