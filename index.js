@@ -13,11 +13,12 @@ const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
+// const Genres = Models.Genre;
+// const Directors = Models.Director;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-mongoose.connect(process.env.CONNECTION_URI, {
+mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+  //mongoose.connect(process.env.CONNECTION_URI, {
+  // mongoose.connect('mongodb://3113N:green88sky55mouse90@cluster0.yhqpb.mongodb.net/myFlix?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -64,10 +65,10 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 // Return data about a genre by genre title
-app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Genres.findOne({ Name: req.params.Name })
-    .then((genre) => {
-      res.json(genre.Description);
+app.get('/movies/Genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ 'Genre.Name': req.params.Name })
+    .then((movies) => {
+      res.json(movies.Genre.Name + ': ' + movies.Genre.Description);
     })
     .catch((err) => {
       console.error(err);
@@ -76,14 +77,14 @@ app.get('/genres/:Name', passport.authenticate('jwt', { session: false }), (req,
 });
 
 // Return data about a director by name
-app.get('/directors/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Directors.findOne({ Name: req.params.Name })
-    .then((director) => {
-      res.json(director);
+app.get("/movies/Director/:Name", passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.findOne({ 'Director.Name': req.params.Name })
+    .then((movies) => {
+      res.json(movies.Director.Name + ': ' + movies.Director.Bio);
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).send('Error: ' + err);
+      res.status(500).send("Error: " + err);
     });
 });
 
@@ -129,6 +130,18 @@ app.post('/users',
         res.status(500).send('Error: ' + error);
       });
   });
+
+// Allow users to view their own user profile
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Users.findOne({ Username: req.params.Username })
+    .then((user) => {
+      res.json(user);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 // Allow users to update their username
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
