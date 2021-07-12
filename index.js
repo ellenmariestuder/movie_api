@@ -16,9 +16,8 @@ const Users = Models.User;
 // const Genres = Models.Genre;
 // const Directors = Models.Director;
 
-mongoose.connect('mongodb://localhost:27017/myFlixDB', {
-  //mongoose.connect(process.env.CONNECTION_URI, {
-  // mongoose.connect('mongodb://3113N:green88sky55mouse90@cluster0.yhqpb.mongodb.net/myFlix?retryWrites=true&w=majority', {
+// mongoose.connect('mongodb://localhost:27017/myFlixDB', {
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
