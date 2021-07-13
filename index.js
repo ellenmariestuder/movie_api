@@ -64,7 +64,8 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 // Return data about a genre by genre title
-app.get('/movies/Genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+// app.get('/movies/Genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/Genre/:Name', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ 'Genre.Name': req.params.Name })
     .then((movies) => {
       res.json(movies.Genre.Name + ': ' + movies.Genre.Description);
