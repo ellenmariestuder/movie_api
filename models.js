@@ -13,7 +13,8 @@ let movieSchema = mongoose.Schema({
     Name: String,
     Bio: String,
     Birth: Date,
-    Death: Date
+    Death: Date,
+    Movies: [String]
   },
   ImagePath: String,
   Featured: Boolean
