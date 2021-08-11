@@ -166,13 +166,14 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
     });
 });
 
-// Allow users to update their username
+// Allow users to update their user data
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOneAndUpdate({ Username: req.params.Username },
     {
       $set: {
         Username: req.body.Username,
-        Password: req.body.Password,
+        Password: hashedPassword,
         Email: req.body.Email,
         Birthday: req.body.Birthday
       },
@@ -205,21 +206,26 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { sess
     });
 });
 
-// Allow users to remove a movie frm their list of favorites
-app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Users.findOneAndRemove({ FavoriteMovies: req.params.MovieID })
-    .then((movie) => {
-      if (!movie) {
-        res.status(400).send(req.params.MovieID + ' was not found.');
-      } else {
-        res.status(200).send(req.params.MovieID + ' was deleted.');
+// Allow users to remove a movie from their list of favorites
+app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt',
+  { session: false }), (req, res) => {
+    Users.findOneAndUpdate({ Username: req.params.Username },
+
+      {
+        $pull: { FavoriteMovies: req.params.MovieID },
+      }, {
+      new: true
+    },
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error ' + err);
+        } else {
+          res.json(updatedUser);
+        }
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+    );
+  });
 
 // Allow existing users to deregister
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
