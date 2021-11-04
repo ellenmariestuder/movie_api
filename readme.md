@@ -32,6 +32,7 @@ This is the server-side component for [myFlix-React](https://github.com/ellenmar
 
 Request | URL | Method | Body Data 
 --- | --- | --- | --- | 
+Return landing/ welcome page |  / | GET | none 
 Return a list of all movies |  /movies | GET | none 
 Return data about a single movie, by title |  /movies/:Title | GET |  none
 Return data about a director, by name |  /director/:Name | GET | none 
